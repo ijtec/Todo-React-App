@@ -17,7 +17,7 @@ function App() {
   const [isEdit, setIsEdit] = useState(false)
 
   const addTodo = () => {
-    var encryptedId = CryptoJS.AES.encrypt(todo, 'WIZKID').toString();
+    var encryptedId = CryptoJS.AES.encrypt(todo, 'ICE').toString();
         setTodos(prevState => [...prevState, {
            id: encryptedId,
            todo:todo,
@@ -33,7 +33,7 @@ function App() {
  }
 
  const handleEdit = (id) => {  
-      var bytes  = CryptoJS.AES.decrypt(id, 'WIZKID');
+      var bytes  = CryptoJS.AES.decrypt(id, 'ICE');
       var original = bytes.toString(CryptoJS.enc.Utf8); 
 
       const update = todos.map(todo => {
@@ -124,16 +124,16 @@ function App() {
           );
         })}
         <div id="one">
-            <p>Pray <span>7am</span></p>
+            <p>Pray </p>
         </div>
         <div id="two">
-            <p> Daily Stand Up Meeting <span>8am</span> </p>
+            <p> Daily Stand Up Meeting</p>
         </div>
         <div id="three">
-            <p> Work on project <span>10am</span></p>
+            <p> Work on project</p>
         </div>
         <div id="four">
-            <p> Practice French <span> 11am & 10:30pm</span></p>
+            <p> Practice French</p>
         </div>
             </div>
             
