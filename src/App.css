@@ -19,9 +19,9 @@
   
 }
 
-.displayUsers div {
+.displayUsers > div {
   width: 400px;
-  height: 200px;
+  height: auto;
   padding: 20px;
   margin: 20px;
   border-radius: 10px;

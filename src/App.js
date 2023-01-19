@@ -1,23 +1,56 @@
 import "./App.css";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { addUser, deleteUser, editUser, editUsername, setInitialState } from "./Redux/reducers/User";
+// import { useSelector, useDispatch } from "react-redux";
+// import { useEffect } from "react";
+// import { addUser, deleteUser, editUser, editUsername, setInitialState } from "./Redux/reducers/User";
+
+var CryptoJS = require("crypto-js");
 
 function App() {
-const dispatch = useDispatch();  
-useEffect(() => {
-         fetch ('https://jsonplaceholder.typicode.com/users')
-        .then(res => res.json())
-        .then(data => dispatch(setInitialState(data)))
-}, [])
+// const dispatch = useDispatch();  
  
-  const userList = useSelector((state) => state.users.value);
-  console.log(userList)
+  const [todos, setTodos] = useState([]) 
+  const [todo, setTodo] = useState("");
+  const [date, setDate] = useState("");
+  const [editTodo, setEditTodo] = useState("");
+  const [editDate, setEditDate] = useState("");
+  const [isEdit, setIsEdit] = useState(false)
 
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [newUsername, setNewUsername] = useState("");
+  const addTodo = () => {
+    var encryptedId = CryptoJS.AES.encrypt(todo, 'WIZKID').toString();
+        setTodos(prevState => [...prevState, {
+           id: encryptedId,
+           todo:todo,
+           date:date
+        }]);
+        setDate("");
+        setTodo('') ;
+  }
+
+  const deleteTodo = (todo) => {
+    const removedItem = todos.filter( item => item !== todo);
+    setTodos(removedItem)
+ }
+
+ const handleEdit = (id) => {  
+      var bytes  = CryptoJS.AES.decrypt(id, 'WIZKID');
+      var original = bytes.toString(CryptoJS.enc.Utf8); 
+
+      const update = todos.map(todo => {
+        if(original !== todo.todo){
+          return
+        }
+        if (todo.id === id) {
+          return {
+            ...todo,
+            todo:editTodo,
+            date:editDate
+          }
+        }
+      })
+      setTodos(update)
+                  
+ }
 
   return (
     <div className="App">
@@ -26,9 +59,10 @@ useEffect(() => {
         <input
           className="h-[40px] w-[80%] border-[1px] outline-[#9BE150] p-2 rounded-xl border-[#9BE150] border-solid"
           type="text"
+          value={todo}
           placeholder="Input your Todo"
           onChange={(event) => {
-            setName(event.target.value);
+            setTodo(event.target.value);
           }}
         />
         <div className="flex flex-col w-full h-[30%] items-center justify-between">
@@ -36,66 +70,63 @@ useEffect(() => {
           <input
           className="h-[40px] w-[80%] border-[1px] outline-[#9BE150] p-2 rounded-xl border-[#9BE150] border-solid"
             type="date"
-            placeholder="Username..."
+            value={date}
             onChange={(event) => {
-              setUsername(event.target.value);
+              setDate(event.target.value);
             }}
           />
         </div>
         <button
          className="bg-[#9BE150] h-[15%] w-[40%] text-white rounded-xl font-semibold"
-          onClick={() => {
-            dispatch(
-              addUser(
-                {
-                  id : userList[userList.length - 1 ].id + 1,
-                  name,
-                  username
-                }
-              )
-            );
-          }}
+          onClick={addTodo}
         >
           {" "}
           Add Todo
         </button>
       </div>
       <div className="displayUsers">
-        {userList.map((user) => {
+        {todos.map((todo) => {
           return (
-            <div key={user.id} className='flex flex-col items-center'>
-              <h1> {user.name}</h1>
-              <h1> {user.username}</h1>
-              <input
-                className="text-black p-2"
-                type="text"
-                placeholder="New Username..."
-                onChange={(event) => {
-                  setNewUsername(event.target.value);
-                }}
-              />
-              <button
-                onClick={() => {
-                  dispatch(
-                    editUser({ id: user.id, username: newUsername })
-                  );
-                }}
-              >
-                {" "}
-                Update Username
-              </button>
-              <button
-                onClick={() => {
-                  dispatch(deleteUser({ id: user.id }));
-                }}
-              >
-                Delete User
-              </button>
+            <div key={todo.id} className='flex flex-col items-center justify-around'>
+              <h1> {todo.todo}</h1>
+              <h1> {todo.date}</h1>
+              {
+                isEdit && <div className="flex w-full justify-between">
+                  <input
+                  className="text-black p-2 w-4/5"
+                  type="text"
+                  placeholder="Edit Todo..."
+                  value={editTodo}
+                  onChange={(event) => {
+                    setEditTodo(event.target.value);
+                  }}
+                /> 
+                  <input type='date' 
+                     className="text-black outline-0" 
+                     value={editDate}
+                     onChange={(event) => {
+                      setEditDate(event.target.value);
+                    }}
+                  />
+                <button className="bg-[green] p-2 shadow-2xl" onClick={() => handleEdit(todo.id)}>Update</button>      
+                </div> 
+               
+              }    
+              <div className="flex w-[15%] h-[20%] self-end mt-4 items-center justify-between">
+                <i className="fa-solid fa-pen-to-square text-[green]" onClick={() => setIsEdit(true)} ></i>
+                    <i className="fa-solid text-[red] fa-trash-can"
+                          onClick={() => deleteTodo(todo)}></i>
+              </div>
             </div>
           );
         })}
       </div>
     </div>
+    // onClick={() => {
+    //   dispatch(
+    //     editUser({ id: todo.id, todo: editTodo })
+    //   );
+    // }}
   );
 }
 
