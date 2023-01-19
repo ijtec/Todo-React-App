@@ -20,7 +20,7 @@
 }
 
 .displayUsers > div {
-  width: 400px;
+  width: 480px;
   height: auto;
   padding: 20px;
   margin: 20px;
@@ -29,4 +29,60 @@
   text-align: center;
   background-color:#9BE150 ;
   color: white;
+}
+
+#one{
+  padding: 12px;
+   border-radius:30px;
+   background-color: #f7d44c;
+   margin-top: 10px;
+   width: 480px;
+}
+
+#two{
+  padding: 12px;
+   border-radius:30px;
+   background-color: #f7d44c;
+   margin-top: 10px;
+   width: 480px;
+  
+}
+#three{
+  padding: 12px;
+   border-radius:30px;
+   background-color: #f7d44c;
+   margin-top: 10px;
+   width: 480px;
+}
+
+#four{
+  padding: 12px;
+   border-radius:30px;
+   background-color: #f7d44c;
+   margin-top: 10px;
+   width: 480px;
+}
+
+#five{
+  padding: 12px;
+   border-radius:30px;
+   background-color: #f7d44c;
+   margin-top: 10px;
+   width: 480px;
+}
+
+#six{
+  padding: 12px;
+   border-radius:30px;
+   background-color: #f7d44c;
+   margin-top: 10px;
+   width: 480px;
+}
+
+#seven{
+  padding: 12px;
+   border-radius:30px;
+   background-color: #f7d44c;
+   margin-top: 10px;
+   width: 480px;
 }

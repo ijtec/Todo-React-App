@@ -69,7 +69,7 @@ function App() {
           <h1 className="text-[20px] font-bold">Set Date</h1>
           <input
           className="h-[40px] w-[80%] border-[1px] outline-[#9BE150] p-2 rounded-xl border-[#9BE150] border-solid"
-            type="date"
+          type='datetime-local'
             value={date}
             onChange={(event) => {
               setDate(event.target.value);
@@ -101,7 +101,7 @@ function App() {
                     setEditTodo(event.target.value);
                   }}
                 /> 
-                  <input type='date' 
+                  <input type='datetime-local'
                      className="text-black outline-0" 
                      value={editDate}
                      onChange={(event) => {
@@ -117,11 +117,28 @@ function App() {
                     <i className="fa-solid text-[red] fa-trash-can"
                           onClick={() => deleteTodo(todo)}></i>
               </div>
+              
             </div>
+            
+
           );
         })}
+        <div id="one">
+            <p>Pray <span>7am</span></p>
+        </div>
+        <div id="two">
+            <p> Daily Stand Up Meeting <span>8am</span> </p>
+        </div>
+        <div id="three">
+            <p> Work on project <span>10am</span></p>
+        </div>
+        <div id="four">
+            <p> Practice French <span> 11am & 10:30pm</span></p>
+        </div>
+            </div>
+            
       </div>
-    </div>
+    
     // onClick={() => {
     //   dispatch(
     //     editUser({ id: todo.id, todo: editTodo })
