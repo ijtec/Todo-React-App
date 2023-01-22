@@ -1,8 +1,12 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useRef} from "react";
 // import { useSelector, useDispatch } from "react-redux";
 // import { useEffect } from "react";
 // import { addUser, deleteUser, editUser, editUsername, setInitialState } from "./Redux/reducers/User";
+import emailjs from '@emailjs/browser';
+
+
+
 
 var CryptoJS = require("crypto-js");
 
@@ -15,16 +19,22 @@ function App() {
   const [editTodo, setEditTodo] = useState("");
   const [editDate, setEditDate] = useState("");
   const [isEdit, setIsEdit] = useState(false)
+  const [email, setEmail] = useState('')
+  
 
   const addTodo = () => {
     var encryptedId = CryptoJS.AES.encrypt(todo, 'ICE').toString();
-        setTodos(prevState => [...prevState, {
-           id: encryptedId,
-           todo:todo,
-           date:date
-        }]);
-        setDate("");
-        setTodo('') ;
+    if(todo ==='' || date === '') {
+      return
+    } {
+      setTodos(prevState => [...prevState, {
+         id: encryptedId,
+         todo:todo,
+         date:date
+      }]);
+      setDate("");
+      setTodo('') ;
+    }
   }
 
   const deleteTodo = (todo) => {
@@ -52,10 +62,22 @@ function App() {
                   
  }
 
+ const form = useRef()
+ const sendEmail = (e) => {
+  e.preventDefault();
+  emailjs.sendForm('service_efh8gh4', 'template_cumjl1u', form.current, 'zb56Hveo6uJdFBQqw')
+    .then((result) => {
+        console.log(result.text);
+    }, (error) => {
+        console.log(error.text);
+    });
+  e.target.reset()
+  addTodo()
+}
   return (
     <div className="App">
       {" "}
-      <div className="addUsers mt-[5vh]  flex flex-col items-center justify-around lg:w-[400px] w-[300px] h-[250px]">
+      <form  onSubmit={sendEmail} ref={form} className="addUsers mt-[5vh] flex flex-col items-center justify-around lg:w-[400px] w-[300px] h-[350px]">
         <input
           className="h-[40px] w-[80%] border-[1px] outline-[#9BE150] p-2 rounded-xl border-[#9BE150] border-solid"
           type="text"
@@ -75,15 +97,19 @@ function App() {
               setDate(event.target.value);
             }}
           />
-        </div>
-        <button
-         className="bg-[#9BE150] h-[15%] w-[40%] text-white rounded-xl font-semibold"
-          onClick={addTodo}
-        >
-          {" "}
-          Add Todo
-        </button>
-      </div>
+        </div> 
+        <div className="flex flex-col w-full h-[30%] items-center justify-between">  
+          <h1 className="text-[20px] font-bold">Email Adreess</h1>
+          <input className="h-[40px] w-[80%] border-[1px] outline-[#9BE150] p-2 rounded-xl border-[#9BE150] border-solid" type='email' placeholder='Email Address' name="email" onChange={(e)=>setEmail(e.target.value)} value={email}/>
+          </div> 
+          <button
+          className="bg-[#9BE150] h-[15%] w-[40%] text-white rounded-xl font-semibold"
+            // onClick={addTodo}
+          >
+            {" "}
+            Add Todo
+          </button>
+      </form>
       <div className="displayUsers">
         {todos.map((todo) => {
           return (
@@ -106,6 +132,10 @@ function App() {
                      value={editDate}
                      onChange={(event) => {
                       setEditDate(event.target.value);
+
+                    
+
+
                     }}
                   />
                 <button className="bg-[green] p-2 shadow-2xl" onClick={() => handleEdit(todo.id)}>Update</button>      
@@ -116,6 +146,13 @@ function App() {
                 <i className="fa-solid fa-pen-to-square text-[green]" onClick={() => setIsEdit(true)} ></i>
                     <i className="fa-solid text-[red] fa-trash-can"
                           onClick={() => deleteTodo(todo)}></i>
+
+            {/* <form ref={form} onSubmit={sendEmail}> 
+            <input type='text' className='form-control' placeholder='name' name="user_name"/>
+           
+            <button type="submit">Send Email</button> */}
+
+            {/* </form> */}
               </div>
               
             </div>
