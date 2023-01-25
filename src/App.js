@@ -99,7 +99,7 @@ function App() {
           />
         </div> 
         <div className="flex flex-col w-full h-[30%] items-center justify-between">  
-          <h1 className="text-[20px] font-bold">Email Adreess</h1>
+          <h1 className="text-[20px] font-bold">Email Address</h1>
           <input className="h-[40px] w-[80%] border-[1px] outline-[#9BE150] p-2 rounded-xl border-[#9BE150] border-solid" type='email' placeholder='Email Address' name="email" onChange={(e)=>setEmail(e.target.value)} value={email}/>
           </div> 
           <button
